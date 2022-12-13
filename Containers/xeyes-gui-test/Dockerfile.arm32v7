@@ -1,0 +1,3 @@
+FROM arm32v7/alpine
+RUN apk update && apk add xeyes
+CMD ["/usr/bin/xeyes"]

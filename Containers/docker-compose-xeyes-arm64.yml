@@ -1,0 +1,42 @@
+version: '2.4'
+services:
+
+  weston:
+    cap_add:
+    - CAP_SYS_TTY_CONFIG
+    device_cgroup_rules:
+    - c 4:0 rmw
+    - c 4:7 rmw
+    - c 13:* rmw
+    - c 199:* rmw
+    - c 226:* rmw
+    environment:
+      ACCEPT_FSL_EULA: '1'
+    image: torizon/weston-vivante@sha256:8aab2dcc73fc45c429811235a38460992062f6023f9380d768d078f58a34ad50
+    network_mode: host
+    volumes:
+    - source: /tmp
+      target: /tmp
+      type: bind
+    - source: /dev
+      target: /dev
+      type: bind
+    - source: /run/udev
+      target: /run/udev
+      type: bind
+
+  xeyes-arm64:
+    platform: linux/arm64
+    image: grilohbg/xeyes-arm64v8:latest
+    depends_on:
+      weston:
+        condition: service_started
+    environment:
+      MACHINE: null
+      DISPLAY: ":0"
+    user: "1000:1000"
+    volumes:
+    - source: /tmp/.X11-unix
+      target: /tmp/.X11-unix
+      type: bind
+    command: xeyes

@@ -1,0 +1,7 @@
+How to launch on Notebook
+
+docker run -ti --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/$(id -u)/gdm/Xauthority:/root/.Xauthority:rw --net host grilohbg/xeyes
+
+
+How to launch on module
+docker run -ti --rm -e DISPLAY=:0 -u $(id -u):$(id -g) -v /tmp/.X11-unix:/tmp/.X11-unix xeyes
